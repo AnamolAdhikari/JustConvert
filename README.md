@@ -1,50 +1,71 @@
-# JustConvert ↗
+# JustConvert
 
-**Free, private, browser-based image and PDF conversion. No file uploads. No signup.**
+A free, open-source tool for converting images and working with PDFs directly in your browser.
 
-**Try it:** https://justconvert.n90.workers.dev/  
-**Status:** Public beta — feedback and bug reports welcome.
+**[Try JustConvert](https://justconvert.n90.workers.dev/)** | **[Report an issue](https://github.com/AnamolAdhikari/JustConvert/issues)**
 
-Convert JPG, PNG and WebP, resize and compress images, create PDFs from images, render PDF pages to images, merge PDFs and split PDFs. Multiple results download as a ZIP. All file processing happens in the browser.
+![JustConvert preview showing its green branding and privacy-first approach](public/pngpreview.png)
 
-## Quick start
+JustConvert is built for everyday file tasks without the extra steps. Open the website, choose your files, and download the results. There is no account to create, and files are processed locally in your browser rather than uploaded to an application server.
+
+## What you can do
+
+- Convert images between JPG, PNG, and WebP.
+- Resize and compress images.
+- Turn images into a PDF.
+- Export PDF pages as PNG or JPG images.
+- Merge several PDFs into one file or split a PDF.
+- Process multiple files and download the results as a ZIP.
+
+## Getting started
+
+You can use the [live website](https://justconvert.n90.workers.dev/) without installing anything.
+
+To run the project locally, you'll need Node.js and npm:
 
 ```bash
+git clone https://github.com/AnamolAdhikari/JustConvert.git
+cd JustConvert
 npm install
 npm run dev
 ```
 
-Open the Vite development URL. To verify: `npm test && npm run build`.
-
-## Supported actions
-
-- JPG / PNG / WebP conversion
-- Image resize and compression
-- Images to PDF
-- PDF to PNG / JPG
-- Merge and split PDFs
-- Batch conversion with ZIP output
+Open the local URL shown in your terminal.
 
 ## Privacy
 
-File contents are processed in the browser; the application does not implement a file-upload endpoint. Dependencies are downloaded during initial page load. Avoid claiming zero network requests: hosting and third-party resources may still generate requests.
+File processing happens in your browser. JustConvert does not implement a server endpoint for uploading your files.
 
-## Safety limits
+The website still needs a network connection to load the application and its dependencies. As with any website, normal hosting requests may occur.
 
-- Maximum 100 MB per input file
-- Maximum 30 files and 250 MB total per batch
-- Images over 40 megapixels are rejected to limit memory use
-- PDF-to-image export is limited to 100 pages; rendered pages are limited to 40 megapixels
-- Browser/device memory constraints may require smaller files even within these limits
+## File limits
 
-## Testing
+These limits help prevent large jobs from exhausting browser memory:
 
-The Playwright suite covers Chromium, Firefox and WebKit. Run `npm run test:e2e` after installing the Playwright browsers. Automated tests complement but do not replace real-device testing.
+- Up to 100 MB per input file.
+- Up to 30 files or 250 MB in a batch.
+- Images larger than 40 megapixels are not accepted.
+- PDF-to-image export supports up to 100 pages, with a 40-megapixel limit for rendered pages.
 
-## Limitations
+Your browser and device may have lower practical limits. Large files can take longer to process, and some PDFs may not work, including password-protected or damaged files. PDF pages exported as images are rasterized, and available image encoding options can vary by browser.
 
-Large PDFs can consume substantial browser memory. Password-protected or malformed PDFs may fail. PDF rendering rasterizes pages. Some image encoders are browser-dependent. This is an early release, not a replacement for every document format.
+## Development and testing
+
+JustConvert uses Vite, JavaScript, pdf-lib, PDF.js, and JSZip. The automated browser tests use Playwright.
+
+```bash
+npm test
+npm run build
+npx playwright install
+npm run test:e2e
+```
+
+The end-to-end suite covers Chromium, Firefox, and WebKit. Automated tests help catch regressions, but they cannot guarantee identical behavior on every device.
+
+## Contributing
+
+JustConvert is a small open-source project, and feedback is welcome. If something doesn't work as expected or you have an idea for an improvement, [open an issue](https://github.com/AnamolAdhikari/JustConvert/issues).
 
 ## License
 
-MIT. Contributions and bug reports welcome.
+JustConvert is available under the [MIT License](LICENSE).
