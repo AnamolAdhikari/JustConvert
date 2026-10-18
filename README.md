@@ -4,7 +4,13 @@ A free, open-source tool for converting images and working with PDFs directly in
 
 **[Try JustConvert](https://justconvert.n90.workers.dev/)** | **[Report an issue](https://github.com/AnamolAdhikari/JustConvert/issues)**
 
-![JustConvert preview showing its green branding and privacy-first approach](public/pngpreview.png)
+![JustConvert homepage](public/screenshots/homepage.png)
+
+### A look at JustConvert
+
+| Converter | More tools |
+| --- | --- |
+| ![JustConvert converter interface](public/screenshots/converter.png) | ![Additional JustConvert tools](public/screenshots/features.png) |
 
 JustConvert is built for everyday file tasks without the extra steps. Open the website, choose your files, and download the results. There is no account to create, and files are processed locally in your browser rather than uploaded to an application server.
 
