@@ -128,3 +128,62 @@ nav a:hover{opacity:.75}
 @media(max-width:1180px){.hero-stage{grid-template-columns:minmax(0,1fr);max-width:760px}.side-rail{display:none}}
 @media(max-width:700px){.shell{padding:0 17px}.hero-stage{display:block}.hero-stage .workspace{margin:0 auto}.trust{margin-top:21px}}
 @media(prefers-reduced-motion:reduce){.workspace,.quick,.drop,.browse-cta,#convert,.rail-link{transition:none!important}}
+
+
+/* Focus mode: one screen, one task, no decorative sidebars */
+:root{background:#f8faf7}
+body{background:radial-gradient(ellipse 50% 48% at 50% 37%,#eaf3e347,transparent 85%),#f8faf7}
+.shell{max-width:1180px;min-height:100svh;display:flex;flex-direction:column;padding:0 30px}
+header{height:70px;flex-shrink:0}
+.brand{font-size:22px}
+.logo{width:34px;height:34px;font-size:23px}
+nav{gap:23px}
+main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5px 0 10px}
+main>.eyebrow{margin:0;font-size:10px;letter-spacing:1.5px}
+h1{font-size:clamp(40px,4.5vw,57px);letter-spacing:-2.9px;line-height:1.06;margin:11px 0 10px}
+.lead{font-size:13px;line-height:1.55;margin:0 auto 19px;max-width:550px}
+.hero-stage{display:block;width:100%;max-width:710px;margin:0 auto}
+.hero-stage .workspace{max-width:none;width:100%;padding:15px;border-radius:20px;box-shadow:0 14px 45px #2b4b2110}
+.workspace-top{padding:0 3px 11px}
+.quick-actions{gap:8px;margin-bottom:11px}
+.quick{padding:9px 5px;border-radius:10px;font-size:12px}
+.quick-icon{font-size:16px}
+.drop{min-height:125px;padding:12px;border-radius:13px}
+.drop-icon{width:36px;height:36px;border-radius:10px;font-size:24px}
+.drop h2{font-size:17px;margin:7px 0 0}
+.drop p{font-size:11px;margin:3px 0 0}
+.browse-cta{display:none}
+.settings{padding:12px 2px 0}
+.settings-heading{margin-bottom:9px}
+.settings>label{margin-bottom:6px}
+select{min-height:42px;padding:9px 12px}
+.options{margin-top:8px}
+#convert{min-height:45px;margin-top:11px;padding:10px;font-size:13px}
+#status{margin:6px 0 0;min-height:0}
+.selected{max-height:120px;margin-top:8px}
+.file-row{min-height:46px;padding:6px 10px}
+.file-thumb{width:30px;height:30px}
+.file-summary{margin:7px 3px 0}
+.trust{margin:13px 0 0;gap:15px;font-size:11px}
+.info,.privacy,.side-rail{display:none}
+footer{height:49px;flex-shrink:0;align-items:center;padding:10px 0 14px;font-size:11px}
+@media(min-width:800px) and (min-height:700px){main{padding-bottom:20px}}
+@media(max-width:700px){
+ .shell{padding:0 15px;min-height:100svh}
+ header{height:62px}
+ .brand{font-size:20px}
+ nav{gap:13px}
+ main{justify-content:center;padding:8px 0}
+ h1{font-size:clamp(36px,8vw,48px);letter-spacing:-2px}
+ .lead{font-size:12px;margin-bottom:16px;max-width:340px}
+ .hero-stage .workspace{padding:10px}
+ .quick{padding:9px 2px;font-size:10px;gap:3px}
+ .drop{min-height:118px}
+ .drop h2{font-size:16px}
+ .settings{padding:10px 2px 0}
+ .trust{margin:13px 0 8px;gap:7px 14px;font-size:10px}
+ footer{height:auto;min-height:44px;gap:8px}
+ .options{gap:8px}
+}
+@media(max-height:720px){main{justify-content:flex-start}main>.eyebrow{margin-top:5px}h1{font-size:clamp(35px,4vw,46px)}.lead{margin-bottom:12px}.drop{min-height:105px}.trust{margin-top:10px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
