@@ -316,3 +316,15 @@ footer{height:49px;flex-shrink:0;align-items:center;padding:10px 0 14px;font-siz
 @media(prefers-reduced-motion:reduce){.result{animation:none}}
 
 .smart-hint{margin:7px 3px 0;color:#53783b;font-size:12px;font-weight:650;line-height:1.4}.smart-hint[hidden]{display:none!important}@media(max-width:700px){.smart-hint{font-size:11px}}
+
+
+/* Successful conversion uses the existing space instead of extending the page */
+.workspace.has-result .drop{min-height:44px;padding:9px 15px;display:flex;align-items:center;justify-content:center;background:#f8fbf5;border-style:dashed}
+.workspace.has-result .drop-icon,.workspace.has-result .drop p{display:none}
+.workspace.has-result .drop h2{font-size:13px;margin:0;font-weight:650}
+.workspace.has-result .drop h2::before{content:'↻  ';color:#609a34}
+.workspace.has-result .selected,.workspace.has-result .file-summary,.workspace.has-result .smart-hint{display:none!important}
+.workspace.has-result .settings{padding-top:9px}
+.workspace.has-result #status{font-size:11px}
+.workspace.has-result .result{margin-top:7px}
+@media(max-width:700px){.workspace.has-result .drop{min-height:42px}.workspace.has-result .drop h2{font-size:12px}}
