@@ -328,3 +328,11 @@ footer{height:49px;flex-shrink:0;align-items:center;padding:10px 0 14px;font-siz
 .workspace.has-result #status{font-size:11px}
 .workspace.has-result .result{margin-top:7px}
 @media(max-width:700px){.workspace.has-result .drop{min-height:42px}.workspace.has-result .drop h2{font-size:12px}}
+
+
+/* Clear, readable repeat action in the successful state */
+.workspace.has-result .drop{min-height:48px;padding:10px 15px}
+.workspace.has-result .drop h2{font-size:0;line-height:1.2;margin:0}
+.workspace.has-result .drop h2::before{content:'↻  Convert another file';font-size:14px;font-weight:750;color:#355c2c}
+.workspace.has-result .drop:hover{background:#eff8e9;border-color:#a6cc85}
+@media(max-width:700px){.workspace.has-result .drop h2::before{font-size:13px}}
