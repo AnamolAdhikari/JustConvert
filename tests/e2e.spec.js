@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { test, expect } from '@playwright/test';
 import { PDFDocument } from 'pdf-lib';
 import JSZip from 'jszip';
-const PNG=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/ScL/nwAAAABJRU5ErkJggg==','base64');
+const PNG=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAHUlEQVR4nGPUmBbwn4ECwESJ5lEDRg0YNWAwGQAAlBgCLXcYqjEAAAAASUVORK5CYII=','base64');
 const PDF=async pages=>{const doc=await PDFDocument.create();for(let i=0;i<pages;i++){const page=doc.addPage([200,200]);page.drawText('Sample '+(i+1),{x:20,y:100})}return Buffer.from(await doc.save())};
 async function convert(page,files,mode){await page.goto('/');await page.locator('#file').setInputFiles(files);await page.locator('#mode').selectOption(mode);const [download]=await Promise.all([page.waitForEvent('download',{timeout:45000}),page.locator('#convert').click()]);expect(await page.locator('#status').innerText()).toContain('Done');return download}
 const image={name:'sample.png',mimeType:'image/png',buffer:PNG};
@@ -15,6 +15,6 @@ test('split PDF generates ZIP',async({page})=>{const d=await convert(page,{name:
 test('PDF renders to PNG',async({page})=>{const d=await convert(page,{name:'one.pdf',mimeType:'application/pdf',buffer:await PDF(1)},'pdf-png');expect(d.suggestedFilename()).toMatch(/\.png$/)});
 test('PDF renders to JPG',async({page})=>{const d=await convert(page,{name:'one.pdf',mimeType:'application/pdf',buffer:await PDF(1)},'pdf-jpg');expect(d.suggestedFilename()).toMatch(/\.jpg$/)});
 test('batch image conversion creates ZIP',async({page})=>{const d=await convert(page,[image,{...image,name:'second.png'}],'jpg');expect(d.suggestedFilename()).toBe('justconvert-results.zip')});
-test('mixed types show a useful error',async({page})=>{await page.goto('/');await page.locator('#file').setInputFiles([image,{name:'a.pdf',mimeType:'application/pdf',buffer:await PDF(1)}]);await page.locator('#mode').selectOption('jpg');await page.locator('#convert').click();await expect(page.locator('#status')).toContainText('only JPG')});
+test('mixed types show a useful error',async({page})=>{await page.goto('/');await page.locator('#file').setInputFiles([image,{name:'a.pdf',mimeType:'application/pdf',buffer:await PDF(1)}]);await page.locator('#mode').selectOption('jpg');await page.locator('#convert').click();await expect(page.locator('#status')).toContainText('only images')});
 test('responsive mobile layout does not overflow',async({page})=>{await page.setViewportSize({width:375,height:812});await page.goto('/');expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy()});
 test('conversion does not upload file contents',async({page})=>{const uploads=[];page.on('request',r=>{if(['POST','PUT','PATCH'].includes(r.method()))uploads.push(r.url())});await convert(page,image,'jpg');expect(uploads).toEqual([])});
