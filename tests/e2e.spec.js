@@ -1,3 +1,6 @@
+import { writeFile, mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { readFile } from 'node:fs/promises';
 import { test, expect } from '@playwright/test';
 import { PDFDocument } from 'pdf-lib';
@@ -57,7 +60,7 @@ test('mobile 375px portrait and landscape remain free of horizontal overflow',as
 test('repeated invalid conversion does not leave app permanently busy',async({page})=>{await page.goto('/');await page.locator('#file').setInputFiles({name:'bad.pdf',mimeType:'application/pdf',buffer:Buffer.from('broken')});await page.locator('#mode').selectOption('split');for(let i=0;i<3;i++){await page.locator('#convert').click();await expect(page.locator('#status')).toContainText('Could not convert');await expect(page.locator('#convert')).toBeEnabled()}});
 
 
-test('rejects files over 100 MB before processing',async({page})=>{await page.goto('/');await page.locator('#file').setInputFiles({name:'huge.png',mimeType:'image/png',buffer:Buffer.alloc(100*1024*1024+1)});await expect(page.locator('#status')).toContainText('Maximum 100 MB');await expect(page.locator('#convert')).toBeDisabled()});
+test('rejects files over 100 MB before processing',async({page})=>{await page.goto('/');const dir=await mkdtemp(join(tmpdir(),'justconvert-'));const path=join(dir,'huge.png');try{const handle=await (await import('node:fs/promises')).open(path,'w');try{await handle.truncate(100*1024*1024+1)}finally{await handle.close()}await page.locator('#file').setInputFiles(path)}finally{await rm(dir,{recursive:true,force:true})}await expect(page.locator('#status')).toContainText('Maximum 100 MB');await expect(page.locator('#convert')).toBeDisabled()});
 test('rejects more than 30 files in a batch',async({page})=>{await page.goto('/');await page.locator('#file').setInputFiles(Array.from({length:31},(_,i)=>({name:'file-'+i+'.png',mimeType:'image/png',buffer:PNG})));await expect(page.locator('#status')).toContainText('Maximum 30 files');await expect(page.locator('#convert')).toBeDisabled()});
 test('rejected batch does not erase previously selected valid files',async({page})=>{await page.goto('/');await page.locator('#file').setInputFiles(image);await page.locator('#file').setInputFiles(Array.from({length:30},(_,i)=>({name:'file-'+i+'.png',mimeType:'image/png',buffer:PNG})));await expect(page.locator('#status')).toContainText('Maximum 30 files');await expect(page.locator('#file-summary')).toContainText('1 file');await expect(page.locator('#convert')).toBeEnabled()});
 test('password-protected PDF shows an error and remains interactive',async({page})=>{await page.goto('/');await page.locator('#file').setInputFiles({name:'locked.pdf',mimeType:'application/pdf',buffer:Buffer.from('%PDF-1.7\n1 0 obj<</Encrypt 2 0 R>>endobj\n%%EOF')});await page.locator('#mode').selectOption('pdf-png');await page.locator('#convert').click();await expect(page.locator('#status')).toContainText('Could not convert');await expect(page.locator('#convert')).toBeEnabled()});
