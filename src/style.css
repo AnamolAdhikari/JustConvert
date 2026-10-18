@@ -314,3 +314,5 @@ footer{height:49px;flex-shrink:0;align-items:center;padding:10px 0 14px;font-siz
 @keyframes result-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:480px){.result{padding:9px}.result-row{gap:8px}.result-download{padding:9px;font-size:11px}.result-details strong{font-size:12px}}
 @media(prefers-reduced-motion:reduce){.result{animation:none}}
+
+.smart-hint{margin:7px 3px 0;color:#53783b;font-size:12px;font-weight:650;line-height:1.4}.smart-hint[hidden]{display:none!important}@media(max-width:700px){.smart-hint{font-size:11px}}
