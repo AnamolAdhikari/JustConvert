@@ -1,3 +1,4 @@
+import { readFile } from 'node:fs/promises';
 import { test, expect } from '@playwright/test';
 import { PDFDocument } from 'pdf-lib';
 import JSZip from 'jszip';
@@ -6,11 +7,11 @@ const PDF=async pages=>{const doc=await PDFDocument.create();for(let i=0;i<pages
 async function convert(page,files,mode){await page.goto('/');await page.locator('#file').setInputFiles(files);await page.locator('#mode').selectOption(mode);const [download]=await Promise.all([page.waitForEvent('download',{timeout:45000}),page.locator('#convert').click()]);expect(await page.locator('#status').innerText()).toContain('Done');return download}
 const image={name:'sample.png',mimeType:'image/png',buffer:PNG};
 test('landing page renders and unsupported files are rejected',async({page})=>{await page.goto('/');await expect(page.getByRole('heading',{name:/Every file has/})).toBeVisible();await page.locator('#file').setInputFiles({name:'bad.txt',mimeType:'text/plain',buffer:Buffer.from('test')});await expect(page.locator('#convert')).toBeDisabled()});
-test('PNG to JPG produces JPEG bytes',async({page})=>{const d=await convert(page,image,'jpg');expect(d.suggestedFilename()).toMatch(/\.jpg$/);const bytes=await (await d.createReadStream()).toArray?.();if(bytes)expect(Buffer.concat(bytes).subarray(0,2)).toEqual(Buffer.from([0xff,0xd8]))});
+test('PNG to JPG produces JPEG bytes',async({page})=>{const d=await convert(page,image,'jpg');expect(d.suggestedFilename()).toMatch(/\.jpg$/);const bytes=await readFile(await d.path());expect(bytes.subarray(0,2)).toEqual(Buffer.from([0xff,0xd8]))});
 test('PNG to WebP produces WebP file',async({page})=>{const d=await convert(page,image,'webp');expect(d.suggestedFilename()).toMatch(/\.webp$/)});
-test('image to PDF yields valid PDF',async({page})=>{const d=await convert(page,image,'image-pdf');expect(d.suggestedFilename()).toBe('images.pdf')});
-test('merge PDFs',async({page})=>{const p=await PDF(2);const d=await convert(page,[{name:'a.pdf',mimeType:'application/pdf',buffer:p},{name:'b.pdf',mimeType:'application/pdf',buffer:await PDF(1)}],'merge');expect(d.suggestedFilename()).toBe('merged.pdf')});
-test('split PDF generates ZIP',async({page})=>{const d=await convert(page,{name:'three.pdf',mimeType:'application/pdf',buffer:await PDF(3)},'split');expect(d.suggestedFilename()).toBe('justconvert-results.zip')});
+test('image to PDF yields valid PDF',async({page})=>{const d=await convert(page,image,'image-pdf');expect(d.suggestedFilename()).toBe('images.pdf');const pdf=await PDFDocument.load(await readFile(await d.path()));expect(pdf.getPageCount()).toBe(1)});
+test('merge PDFs',async({page})=>{const p=await PDF(2);const d=await convert(page,[{name:'a.pdf',mimeType:'application/pdf',buffer:p},{name:'b.pdf',mimeType:'application/pdf',buffer:await PDF(1)}],'merge');expect(d.suggestedFilename()).toBe('merged.pdf');const pdf=await PDFDocument.load(await readFile(await d.path()));expect(pdf.getPageCount()).toBe(3)});
+test('split PDF generates ZIP',async({page})=>{const d=await convert(page,{name:'three.pdf',mimeType:'application/pdf',buffer:await PDF(3)},'split');expect(d.suggestedFilename()).toBe('justconvert-results.zip');const zip=await JSZip.loadAsync(await readFile(await d.path()));expect(Object.keys(zip.files)).toHaveLength(3)});
 test('PDF renders to PNG',async({page})=>{const d=await convert(page,{name:'one.pdf',mimeType:'application/pdf',buffer:await PDF(1)},'pdf-png');expect(d.suggestedFilename()).toMatch(/\.png$/)});
 test('PDF renders to JPG',async({page})=>{const d=await convert(page,{name:'one.pdf',mimeType:'application/pdf',buffer:await PDF(1)},'pdf-jpg');expect(d.suggestedFilename()).toMatch(/\.jpg$/)});
 test('batch image conversion creates ZIP',async({page})=>{const d=await convert(page,[image,{...image,name:'second.png'}],'jpg');expect(d.suggestedFilename()).toBe('justconvert-results.zip')});
