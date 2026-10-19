@@ -2,7 +2,9 @@
 
 A free, open-source tool for converting images and working with PDFs directly in your browser.
 
-**[Try JustConvert](https://justconvert.n90.workers.dev/)** | **[Report an issue](https://github.com/AnamolAdhikari/JustConvert/issues)**
+[![CI](https://github.com/AnamolAdhikari/JustConvert/actions/workflows/ci.yml/badge.svg)](https://github.com/AnamolAdhikari/JustConvert/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+**[Try JustConvert](https://justconvert.n90.workers.dev/)** · **[Report an issue](https://github.com/AnamolAdhikari/JustConvert/issues)** · **[Contribute](CONTRIBUTING.md)**
 
 ![JustConvert homepage](public/screenshots/homepage.png)
 
@@ -70,7 +72,9 @@ The end-to-end suite covers Chromium, Firefox, and WebKit. Automated tests help 
 
 ## Contributing
 
-JustConvert is a small open-source project, and feedback is welcome. If something doesn't work as expected or you have an idea for an improvement, [open an issue](https://github.com/AnamolAdhikari/JustConvert/issues).
+JustConvert is a small open-source project, and feedback is welcome. If something doesn't work as expected or you have an idea for an improvement, [open an issue](https://github.com/AnamolAdhikari/JustConvert/issues). For code contributions, see the [contribution guide](CONTRIBUTING.md) and browse [open issues](https://github.com/AnamolAdhikari/JustConvert/issues).
+
+If JustConvert saved you time, consider [starring the repository](https://github.com/AnamolAdhikari/JustConvert). It helps others discover the project.
 
 ## License
 
